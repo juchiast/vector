@@ -86,7 +86,7 @@ impl Future for CloudwatchFuture {
                             ) = e
                             {
                                 if self.create_missing_group {
-                                    info!("log group provided does not exist; creating a new one.");
+                                    info!("Log group provided does not exist; creating a new one.");
 
                                     self.state = State::CreateGroup(self.client.create_log_group());
                                     continue;
