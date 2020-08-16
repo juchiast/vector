@@ -117,7 +117,7 @@ impl Future for CloudwatchFuture {
                         info!(message = "putting logs.", ?token);
                         self.state = State::Put(self.client.put_logs(token, events));
                     } else if self.create_missing_stream {
-                        info!("provided stream does not exist; creating a new one.");
+                        info!("Provided stream does not exist; creating a new one.");
                         self.state = State::CreateStream(self.client.create_log_stream());
                     } else {
                         return Err(CloudwatchError::NoStreamsFound);
