@@ -121,6 +121,15 @@ impl FileSink {
                         None => {
                             // If we got `None` - terminate the processing.
                             debug!(message = "Receiver exhausted, terminating the processing loop.");
+
+                            // Before returning, let's make sure all the data and metadata
+                            // have reached the filesystem. 
+                            for (path, file) in self.files.iter_mut() {
+                                if let Err(error) = file.sync_all().await {
+                                    warn!(message = "Failed to sync data to filesystem.", ?path, %error);
+                                }
+                            }
+
                             break;
                         }
                         Some(event) => self.process_event(event).await,
